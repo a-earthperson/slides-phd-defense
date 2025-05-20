@@ -1,0 +1,163 @@
+%-------------------------------------------------------------
+%  Package: beamertheme-SimpleDarkBlue
+%  Author: Pin-Yen Huang (pyhuang97@gmail.com)
+%  Version: 1.1, 2025-01-12
+%  Link: https://github.com/pm25/SimpleDarkBlue-BeamerTheme
+%  This is free and unencumbered software released into the
+%  public domain; see <http://unlicense.org> for details.
+%-------------------------------------------------------------
+
+%--------------------------------------
+%  Beamer Settings
+%--------------------------------------
+
+\mode<presentation>
+\usetheme{Antibes}
+
+% \usetheme{EastLansing}
+% \usepackage{natbib}
+
+% title page customization
+\setbeamertemplate{title page}{%
+    \begingroup
+    \centering
+    % ------------------------
+    \begin{beamercolorbox}[sep=12pt,center]{title}
+        \usebeamerfont{title}\inserttitle\par%
+        \ifx\insertsubtitle\@empty%
+        \else%
+        \vskip0.5em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+        \fi%
+    \end{beamercolorbox}%
+    \vskip0.5em\par
+    % ------------------------
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+        \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \vskip-1em
+    % ------------------------
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+        \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    % ------------------------
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+        \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}\vskip0.5em
+    % ------------------------
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+    \endgroup
+    \vfill
+}
+
+\setbeamersize{text margin left=1.5em,text margin right=1.5em}
+
+
+% \setbeamertemplate{enumerate items}[default]
+% \setbeamertemplate{enumerate subitem}[default]
+% \setbeamertemplate{itemize items}[triangle]
+% \setbeamertemplate{itemize subitem}[default]
+\setlength{\itemsep}{0pt} % spacing between items
+\setlength{\parsep}{0pt} % spacing between paragraphs
+
+\usepackage[backend=biber, style=numeric, sorting=ydnt, doi=true, eprint=false, related=false, url=true, isbn=true, date=year, giveninits=false, maxnames=9, defernumbers=true]{biblatex}
+\addbibresource{reference.bib}
+
+% Custom author highlighting
+\DeclareNameFormat{author}{%
+  \begingroup
+    \nameparts{#1}% split the name into parts
+    \edef\lastname{\namepartfamily}%
+    \edef\firstname{\namepartgiven}%
+    % Check if the name matches exactly "Earthperson, Arjun"
+    \IfStrEq{\lastname}{Earthperson}{%
+      \IfStrEq{\firstname}{Arjun}{%
+        % Highlight matched author
+        %\textbf{\textcolor{blue}{\lastname, \firstname}}%
+        {\textbf{\textcolor{black}{\firstname \space \lastname}}}%
+      }{%
+        % Not matched, print normally
+        \firstname \space \lastname
+      }%
+    }{%
+      % Not matched, print normally
+     \firstname \space \lastname %
+    }%
+    % Add comma between authors if needed
+    \ifthenelse{\value{listcount}<\value{liststop}}%
+      {\addcomma\space}%
+      {}%
+  \endgroup
+}
+
+\defbibenvironment{bibliography}
+{\list{}
+{
+% \setlength{\leftmargin}{0pt}%
+% \setlength{\itemindent}{0pt}%
+\setlength{\itemsep}{6pt}%
+\setlength{\parsep}{0pt}
+}}
+{\endlist}
+{\item}
+
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{\printfield{labelnumber}}}% print reference numbers
+     {
+      \setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{0.5\labelwidth}%
+      \setlength{\labelsep}{0.15\biblabelsep}%
+      \setlength{\itemsep}{0pt}% spacing between items
+      \setlength{\parsep}{6pt}% spacing between paragraphs
+     }
+  }
+{\endlist}
+{\item}
+
+% Only print last names in citations and bibliography
+% \DeclareNameFormat{labelname}{%
+%   \usebibmacro{name:last}{#1}{#3}{#5}{#7}%
+%   \usebibmacro{name:andothers}}
+
+% \setlength{\bibitemsep}{2.5ex} % adjust vertical spacing between entries
+% \bibliographystyle{apalike}
+% make bibliography entries smaller
+\renewcommand\bibfont{\tiny}
+% If you have more than one page of references, you want to tell beamer
+% to put the continuation section label from the second slide onwards
+\setbeamertemplate{frametitle continuation}[from second]
+% Now get rid of all the colours
+% and kill the abominable icon
+% \setbeamertemplate{bibliography item}{}
+
+% \setbeamertemplate{footline}{%
+%     \hfill%
+%     \usebeamerfont{footline}%
+%     \usebeamercolor[fg]{footline}%
+%     \insertframenumber/\inserttotalframenumber%
+%     \hspace{1em}%
+% }
+
+%--------------------------------------
+% Footline with frame number on left and navigation symbols on right
+%--------------------------------------
+\setbeamertemplate{footline}{%
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,leftskip=0.5em]{footline}%
+            \usebeamerfont{footline}\insertframenumber/\inserttotalframenumber%
+        \end{beamercolorbox}%
+        % \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,rightskip=1em, right]{footline}%
+        %     \usebeamerfont{footline}\insertslidenavigationsymbol%
+        % \end{beamercolorbox}%
+    }%
+}
+
+
+\setbeamercovered{transparent=50}
+% \usefonttheme{SimpleDarkBlue}
+\usecolortheme{SimpleDarkBlue}
+% \useinnertheme{SimpleDarkBlue}
+
+\mode<all>

@@ -1,0 +1,40 @@
+
+
+\begin{frame}[allowframebreaks]{Research Contribution}
+\begin{enumerate}
+\item \textbf{Unification within the generalized Probabilistic Circuit (PC) framework:}
+  \begin{itemize}
+    \item{Unify linked event/fault tree logic as a special class of PCs.}
+    \item {Provide tractability and accuracy guarantees.}
+  \end{itemize}
+\vspace{16pt}
+\item \textbf{Data-Parallel Monte Carlo for Boolean Circuits:}
+  \begin{itemize}
+    \item{Simultaneous evaluation of \emph{all} intermediate gates, success, and failure paths.}
+    \item{Relax coherence constraints - arbitrary shapes with NOT gates permitted.}
+    \item{Vectorized bitwise hardware ops for logical primitives (AND, OR, XOR, etc.)}
+    \item{Specialized treatment of \(k/n\) logic, without expansion.}
+    \item{Simultaneous use of all available compute - GPUs, multicore CPUs.}
+    \vspace{16pt}
+  \end{itemize}
+\framebreak
+
+\item \textbf{Benchmarks and Open-source Prototypes:}  
+  \begin{itemize}
+    \item{Preliminary benchmarks on Aralia dataset.}
+    \item{Ongoing benchmarks on generic PWR PRA model.}
+    \item{C++/SYCL implementation, integrated into widely available SCRAM PRA tool.}
+    \item{Alternative Python implementation, built using Tensorflow, available on PyPI.}
+\vspace{16pt}
+  \end{itemize}
+
+
+\item \textbf{Sampling Techniques for Partial-Derivatives:}  
+  \begin{itemize}
+    \item{Bitwise algorithm for computing derivatives using Monte Carlo sampling.}
+    \item{Sensitivity and importance analysis using sampling methods.}
+    \item{Gradient computation opens a path towards learning-based tasks.}
+    \vspace{4pt}
+  \end{itemize}
+\end{enumerate}
+\end{frame}
