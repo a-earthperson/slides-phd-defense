@@ -1,0 +1,10 @@
+% One-slide “North-Star” story arc
+\begin{frame}[t]{Research Story in One Slide}
+  \begin{enumerate}[<+->]
+    \item \textbf{Problem.}  Exact PRA quantification crumbles beyond a few hundred gates; industry still waits hours–days for large models.
+    \item \textbf{Idea.}  Treat the \emph{entire} PRA—event trees \& fault trees—as one probabilistic DAG and evaluate it via massively–parallel Monte-Carlo.
+    \item \textbf{Enablers.}  Hardware-native voting gates, a Monte-Carlo–oriented compilation pipeline, and GPU-resident bit-packed kernels.
+    \item \textbf{Evidence.}  186× compile-time reduction; sub-percent error on $\sim10^3$-event graphs in <5 s on a laptop GPU.
+    \item \textbf{Impact.}  Opens path to real-time, high-fidelity risk insights and lays groundwork for dynamic \& correlated extensions.
+  \end{enumerate}
+\end{frame}

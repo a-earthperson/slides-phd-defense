@@ -1,15 +1,11 @@
 \section{Introduction}
 \subsection{Research Agenda}
 \begin{frame}{Research Questions}
-  \begin{itemize}
-    \item{How can large-scale PRA models be quantified efficiently?}
-        \vspace{4pt}
-    \item {What are the overlaps between PRA models and Probabilistic Circuits?}
-    \vspace{4pt}
-    \item{What guarantees can be made about tractability and accuracy when using Monte Carlo for probability estimation?}
-        \vspace{4pt}
-    \item {What techniques can be developed to exploit native hardware parallelism for PRA quantification?}
-    \vspace{4pt}
-
-  \end{itemize}
+  \begin{enumerate}[<+->]
+    \item How can \textbf{all} event– and fault–tree dependencies be embedded in a single probabilistic DAG amenable to high-throughput evaluation?
+    \item Which \textbf{data-parallel Monte-Carlo algorithms} best leverage modern GPUs for Boolean circuits with $\ge 10^{5}$ nodes?
+    \item What compilation and data-structure transformations minimize \emph{graph size} and \emph{arithmetic intensity} without breaking Monte-Carlo unbiasedness?
+    \item How can convergence be certified in real time for probabilities spanning $10^{-0}$–$10^{-8}$?
+    \item What extensions—variance reduction, discrete-event simulation—are needed for ultra-rare events and time-dependent risk?
+  \end{enumerate}
 \end{frame}

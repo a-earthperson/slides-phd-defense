@@ -1,95 +1,44 @@
-\title{A Data-Parallel Monte Carlo Framework for Large-Scale PRA
-using Probabilistic Circuits}
-\subtitle{PhD Defense, Nuclear PRA}
-
 \section{Motivation}
-\subsection{PRA Unmet Needs}
-\begin{frame}[t]{Long-Standing Needs in PRA Quantification}
+
+% -------------------------------------------------
+\subsection{The Bottleneck in Modern PRA}
+\begin{frame}[t]{Why Large PRA Models Still Hurt}
   \begin{itemize}
-    \item Large-scale PRA models ($\geq\space\approx10^4$ components) remain computationally taxing.
-    \item To ease burden, approximations are used, implicating accuracy.
-    \item No knobs for controlling trade-off between accuracy and speed.
+    \item \alert{Combinatorial Explosion.}  Minimal cut-set enumeration scales $\mathcal{O}(2^{n})$; full-core reactor PRA now couples \textasciitilde{}\,$10^{2}$ event trees and $10^{3}$ fault trees ($\approx10^{5}$ basic events).
+    \item \alert{Reliance on Approximations.}  Truncation, bounding (min–cut upper bound) and rare–event heuristics trade rigour for tractability.
+    \item \alert{Turn-around Times.}  State-of-practice tools still report \textbf{hours to days} for full quantification on commodity CPUs.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{Long-Standing Needs in PRA Quantification}
-  \begin{itemize}
-    \item Large-scale PRA models ($\geq\space\approx10^4$ components) remain computationally taxing.
-    \item To ease burden, approximations are used, implicating accuracy.
-    \item No knobs for controlling trade-off between accuracy and speed.
-  \end{itemize}
-    \vspace{16pt}
-    Large-scale PRA models still takes days to quantify.
+% -------------------------------------------------
+\subsection{Hardware Opportunity}
+\begin{frame}[t]{Data-Parallel Hardware is Waiting}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \item Consumer GPUs \textbf{\small$>10^{12}$ integer ops/s} at $<100$ W.
+        \item Dedicated bit-manipulation units (e.g. popcount, VNNI) ideal for Boolean evaluation.
+        \item PRA logic is embarrassingly parallel yet \emph{under-utilizes} this silicon.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \centering
+      % --- Simplified performance table ---
+        \begin{tabular}{lr}
+          \toprule
+          \textbf{Device} & \textbf{Integer Ops/s} \\
+          \midrule
+          NVIDIA A100 GPU & $\sim2\times10^{12}$ \\
+          RTX~3060 Laptop & $\sim3\times10^{11}$ \\
+          8-core CPU & $\sim8\times10^{8}$ \\
+          Single CPU core & $\sim1\times10^{8}$ \\
+          \bottomrule
+        \end{tabular}
+        \scriptsize Peak 32-bit integer throughput (vendor specs)
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  \begin{block}{Key Insight}
+    PRA probability estimation is analogous to forward inference in a feed-forward neural network :: same hardware, different algebra.
+  \end{block}
 \end{frame}
-
-\subsection{Emerging Opportunities}
-\begin{frame}[t]{Evolving Hardware Landscape}
-\textbf{Industry responding to emerging ML compute challenges by investing heavily in data-parallel hardware}
-  \begin{itemize} 
-    \item GPUs, tensor cores provide high throughput for integer operations.
-    \item Current-gen consumer hardware already supports specialized ops (Intel AMX, VNNI).
-  \end{itemize}
-  \vspace{8pt}
-\textbf{Designed for Massive Workloads}
-  \begin{itemize} 
-    \item $\approx10^9$ parameters on mobile devices, $\approx10^{12}$ on HPC/cloud.
-    \item Comparatively, largest PRA models: $\approx10^6$ parameters.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[t]{Evolving Hardware Landscape}
-\textbf{Industry responding to emerging ML compute challenges by investing heavily in data-parallel hardware}
-  \begin{itemize} 
-    \item GPUs, tensor cores provide high throughput for integer operations.
-    \item Current-gen consumer hardware already supports specialized ops (Intel AMX, VNNI).
-  \end{itemize}
-  \vspace{8pt}
-\textbf{Designed for Massive Workloads}
-  \begin{itemize} 
-    \item $\approx10^9$ parameters on mobile devices, $\approx10^{12}$ on HPC/cloud.
-    \item Comparatively, largest PRA models: $\approx10^6$ parameters.
-  \end{itemize}
-      \vspace{12pt}
-  \textit{But PRA models have no overlap with ML models.}\\
-\end{frame}
-
-\begin{frame}[t]{Evolving Hardware Landscape}
-\textbf{Industry responding to emerging ML compute challenges by investing heavily in data-parallel hardware}
-  \begin{itemize} 
-    \item GPUs, tensor cores provide high throughput for integer operations.
-    \item Current-gen consumer hardware already supports specialized ops (Intel AMX, VNNI).
-  \end{itemize}
-  \vspace{8pt}
-\textbf{Designed for Massive Workloads}
-  \begin{itemize} 
-    \item $\approx10^9$ parameters on mobile devices, $\approx10^{12}$ on HPC/cloud.
-    \item Comparatively, largest PRA models: $\approx10^6$ parameters.
-  \end{itemize}
-      \vspace{12pt}
-  \textit{But PRA models have no overlap with ML models(?)}\\
-\end{frame}
-
-\begin{frame}[t]{Evolving Hardware Landscape}
-\textbf{Industry responding to emerging ML compute challenges by investing heavily in data-parallel hardware}
-  \begin{itemize} 
-    \item GPUs, tensor cores provide high throughput for integer operations.
-    \item Current-gen consumer hardware already supports specialized ops (Intel AMX, VNNI).
-  \end{itemize}
-  \vspace{8pt}
-\textbf{Designed for Massive Workloads}
-  \begin{itemize} 
-    \item $\approx10^9$ parameters on mobile devices, $\approx10^{12}$ on HPC/cloud.
-    \item Comparatively, largest PRA models: $\approx10^6 \text{ to } 10^9$ parameters.
-  \end{itemize}
-    \vspace{12pt}
-\textit{But PRA models have no overlap with ML models (?)} - \textbf{Research Question}\\
-\textit{Probability estimation analogous to inference in feed-forward networks.}
-\end{frame}
-
-\note{
-    \begin{itemize}
-        \item here, I want to say that hardware vendors, and the industry in general is responding to emerging AI/ML compute challenges by investing heavily in data-parallel hardware (GPGPU, ASIC accelerators, tensor processors). Ops/W/die is improving, opening up opportunities on HPC/cloud as well edge/personal devices. At the same time, the sheer complexity of AI/ML models is many orders of magnitude (trillions of params) larger vs PRA models (currently hundreds of thousands to millions of params). If the algorithms could leverage the appropriate hardware, PRA quantification (in terms of size) would have been solved by now. But, SOTA PRA methods are nowhere close to being able to leverage this new/emerging hardware. We need new methods.
-    \end{itemize}
-}
-
-%% 
