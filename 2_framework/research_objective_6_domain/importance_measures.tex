@@ -1,0 +1,81 @@
+
+\section{Research Objective 6: Domain Specific Extensions}
+\begin{frame}
+    \Large{\centerline{\textbf{Research Objective 6}}}
+    \vspace{6pt}
+    \large{\centerline{\textbf{Develop Importance Measures, Extend Common-Cause-Failure Analysis}}}
+\end{frame}
+
+% ------------------------------------
+%  Frame 1 – Why Importance Measures?
+% ------------------------------------
+\subsection{Compute On-the-Fly Importance Measures}
+\begin{frame}{Why Compute Importance Measures?}
+  \begin{itemize}
+    \item PRA stakeholders ask: \emph{“Which components matter most?”}
+    \item Classical sensitivity indices (Birnbaum, Fussell–Vesely, RAW, RRW) quantify
+          the change in top-event probability when basic-event reliabilities shift.
+    \item Goal: embed these metrics \textbf{inside} the MC engine — no extra cut-set enumeration, no separate gate passes.
+  \end{itemize}
+  \vspace{6pt}
+  \centering
+  % \includegraphics[width=0.65\linewidth]{1_concepts/importance_cartoon.pdf} % placeholder figure
+\end{frame}
+
+% ------------------------------------
+%  Frame 2 – Definitions
+% ------------------------------------
+\begin{frame}{Classical Definitions (per basic event $i$)}
+\footnotesize
+\begin{tabular}{l p{12cm}}
+\toprule
+\textbf{Measure} & \textbf{Analytical Definition}\\
+\midrule
+Birnbaum (MIF) & $\displaystyle \operatorname{MIF}_i = \frac{\partial P_{\text{top}}}{\partial p_i}$\\[4pt]
+Critical (CIF) & $\displaystyle \operatorname{CIF}_i = \operatorname{MIF}_i\,\frac{p_i}{P_{\text{top}}}$\\[4pt]
+Diagnostic (DIF) & $\displaystyle \operatorname{DIF}_i = \frac{\Pr\{X_i=1\,\wedge\,Z=1\}}{p_i P_{\text{top}}}$\\[4pt]
+RAW / RRW & Risk achievement / reduction worth — counterfactual probabilities when $X_i$ forced to $1$ or $0$\\
+\bottomrule
+\end{tabular}
+\pause
+\vspace{4pt}
+\textbf{Key insight:}\; All measures reduce to combinations of three sample proportions:
+\[ \widehat p_i = \frac{s_i}{n},\quad \widehat p_0=\frac{s_0}{n},\quad \widehat p_{0,i}=\frac{s_{0,i}}{n}. \]
+\end{frame}
+
+% ------------------------------------
+%  Frame 3 – MC Estimation & Convergence
+% ------------------------------------
+\begin{frame}{MC Estimation with Minimal Sufficient Statistics}
+    \textbf{Per-iteration tallies}
+    \[
+      s_i \!\leftarrow\! s_i + \operatorname{popcount}(X_i),\quad
+      s_0 \!\leftarrow\! s_0 + \operatorname{popcount}(Z),\quad
+      s_{0,i} \!\leftarrow\! s_{0,i} + \operatorname{popcount}(X_i \,\&\, Z).
+    \]
+    Only \textbf{one} extra bitwise \texttt{AND} + \texttt{popcount} per basic event.
+
+    \vspace{4pt}
+    \textbf{Estimator example (Birnbaum):}
+    \[
+      \widehat{\operatorname{MIF}}_i =
+      \frac{\widehat p_{0,i} - \widehat p_0\widehat p_i}
+           {\widehat p_i(1-\widehat p_i)}.
+    \]
+\end{frame}
+
+% ------------------------------------
+%  Frame 3 – MC Estimation & Convergence
+% ------------------------------------
+\begin{frame}{MC Estimation with Minimal Sufficient Statistics}
+    \begin{block}{Convergence Guarantee}
+      Each counter is a sum of $n=TN$ independent Bernoulli trials:
+      \[
+        \sqrt{n}\,(\widehat p - p) \;\xrightarrow{d}\; \mathcal N(0,\,p(1-p)).
+      \]
+      By the delta method the importance estimators inherit $\mathcal O(n^{-1/2})$ variance.
+
+      \vspace{4pt}
+      \emph{Same composite stopping rule} (half-width, credible interval, info-gain) thus applies without modification.
+    \end{block}
+\end{frame}

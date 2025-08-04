@@ -1,7 +1,9 @@
-\section{Preliminary Case Study}
-\subsection{Setup}
+
+\section{Research Objective 5: Case Studies and Benchmarks}
 \begin{frame}
-    \Huge{\centerline{\textbf{Preliminary Case Study}}}
+    \Large{\centerline{\textbf{Research Objective 5}}}
+    \vspace{6pt}
+    \large{\centerline{\textbf{Case Studies and Benchmarks}}}
 \end{frame}
 
 \subsection{Aralia Fault Tree Data Set}
@@ -38,77 +40,78 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]
-\frametitle{Monte Carlo Execution and Implementation}
-\begin{itemize}
-  \item \textbf{Sampling Strategy:}
-    \begin{itemize}
-      \item Single pass per fault tree, generating as many samples as fit in 6\,GB GPU memory.  
-      \item 128-bit Philox4x32x10 pseudo-random number generator, parallel threads.
-    \end{itemize}
-  \item \textbf{Bit-Packing Optimization:}
-    \begin{itemize}
-      \item Each group of 64 Monte Carlo outcomes stored in a single 64-bit word.  
-      \item Enables vectorized instructions (e.g.\ \texttt{popcount}) and reduces memory I/O.
-    \end{itemize}
-  \item \textbf{Data Types:}
-    \begin{itemize}
-      \item Tallies in 64-bit integers.  
-      \item Probability accumulations in double precision (64-bit float).  
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]
+\subsection{Accuracy Benchmarks}
+\begin{frame}
     \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\textwidth]{4_casestudy/error_vs_prob_detailed.png}
-    \caption{Mean Absolute Error – Exact (BDD) vs Approximate Methods}
+    \includegraphics[height=1.1\textheight]{4_casestudy/abs_err.eps}
     \label{fig:mae_vs_logp}
 \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks]
+\subsection{Accuracy vs. Time to Convergence}
+\begin{frame}
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=1\textheight]{4_casestudy/throughput/slides_nodes_vs_convergence.eps}
+    \caption{Time to convergence for different accuracy targets.}
+    \label{fig:nodes_vs_convergence}
+\end{figure}
+\end{frame}
+
+\subsection{Convergence Runs}
+\begin{frame}
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=1\textheight]{4_casestudy/conv_raw.eps}
+    \label{fig:convergence_run_01}
+\end{figure}
+\end{frame}
+
+\subsection{Convergence Runs, Comparison with MCUB, REA}
+\begin{frame}
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=1\textheight]{4_casestudy/conv_figeps.eps}
+    \label{fig:convergence_run_01}
+\end{figure}
+\end{frame}
+
+\subsection{Convergence Run -- Rare Event, Comparison with MCUB}
+\begin{frame}
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.9\textheight]{4_casestudy/conv_ips9607.eps}
+    \label{fig:convergence_run_01}
+\end{figure}
+\end{frame}
+
+\subsection{Convergence Free Run}
+\begin{frame}
     \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{4_casestudy/rare-event.jpg}
+    \includegraphics[width=1\textwidth]{4_casestudy/conv_nus9601.eps}
     \label{fig:rare}
 \end{figure}
 \end{frame}
 
 
 \subsection{Aralia Fault Tree Data Set - Convergence for Rare Events}
-\begin{frame}[allowframebreaks]
+\begin{frame}
     \input{4_casestudy/4_mae}
 \end{frame}
 
-\subsection{Aralia Fault Tree Data Set - Throughput Benchmarks}
-\begin{frame}
-    \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{4_casestudy/throughput/slides_nodes_vs_throughput.eps}
-    \caption{PDAG Node Count vs Throughput [bit/s]}
-    \label{fig:nodes_vs_throughput}
-\end{figure}
-\end{frame}
+% \subsection{Aralia Fault Tree Data Set - Throughput Benchmarks}
+% \begin{frame}
+%     \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{4_casestudy/throughput/slides_nodes_vs_throughput.eps}
+%     \caption{PDAG Node Count vs Throughput [bit/s]}
+%     \label{fig:nodes_vs_throughput}
+% \end{figure}
+% \end{frame}
 
 
-\begin{frame}
-    \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{4_casestudy/throughput/slides_nodes_vs_throughput.eps}
-    \caption{PDAG Node Count vs Throughput [bit/s]}
-    \label{fig:nodes_vs_throughput}
-\end{figure}
-\end{frame}
-
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=1\textwidth]{4_casestudy/throughput/slides_nodes_vs_convergence.eps}
-    \caption{Time to convergence for different convergence targets, multicore CPU, embedded GPU, and discrete GPU}
-    \label{fig:nodes_vs_convergence}
-\end{figure}
 
 
 % \begin{frame}{Aralia Fault Tree Dataset}

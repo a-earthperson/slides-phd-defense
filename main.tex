@@ -7,6 +7,10 @@
 \usetheme{SimpleDarkBlue}
 
 
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\input{acronyms}
+
 \usepackage{booktabs}  % professionally typeset tables
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -81,8 +85,11 @@ for Quantifying Risk using Probabilistic Circuits}
 \input{1_concepts/_}
 \input{2_framework/_}
 \input{execution_model/execution_model}
-\input{4_casestudy/_}
+% \input{4_casestudy/_}
 \input{5_roadmap/_}
+\begin{frame}
+    \Huge{\centerline{\textbf{The End}}}
+\end{frame}
 \input{4_misc/main}
 %------------------------------------------------
 
@@ -94,9 +101,7 @@ for Quantifying Risk using Probabilistic Circuits}
 
 %------------------------------------------------
 
-\begin{frame}
-    \Huge{\centerline{\textbf{The End}}}
-\end{frame}
+
 
 %----------------------------------------------------------------------------------------
 

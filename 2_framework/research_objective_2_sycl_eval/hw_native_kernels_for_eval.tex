@@ -67,8 +67,8 @@ $X$ & $Y$ & AND & OR & XOR & NAND & NOR & XNOR \\ \hline
       \begin{description}
         \item[Host] submits \texttt{queue.submit()} with a \texttt{kernel\_name}.
         \item[ND-Range] $\langle\,\text{global}\;3\!\times\!\text{local}\,\rangle$ defines grid.
-        \item[Work-Group] maps to CUDA block / OpenCL work-group.
-        \item[Sub-Group] (warp/wavefront) gives warp-level shuffle & ballot ops.
+        \item[Work-Group] maps to CUDA block \/ OpenCL work-group.
+        \item[Sub-Group] (warp/wavefront) gives warp-level shuffle \& ballot ops.
         \item[Device USM] used for persistent bit-packed buffers.
       \end{description}
     \column{0.7\textwidth}
@@ -133,6 +133,3 @@ $X$ & $Y$ & AND & OR & XOR & NAND & NOR & XNOR \\ \hline
         \includesvg[height=0.9\textheight]{1_concepts/mem_allocation_lines_zoom.svg}
   \end{columns}
 \end{frame}
-
-
-

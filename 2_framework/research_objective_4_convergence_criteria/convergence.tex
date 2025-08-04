@@ -56,27 +56,80 @@
   \end{block}
 \end{frame}
 
-\subsection{Composite Convergence Criteria}
+\subsection{On-the-Fly Updates}
 % ----------------------------------------------------------------------------
 %  Composite Convergence Diagnostics
 % ----------------------------------------------------------------------------
-\begin{frame}{Composite Convergence Diagnostics}
-  \begin{columns}
-    \column{0.55\textwidth}
-      \begin{itemize}
-        \item \textbf{Frequentist half-width} $h_v(z)$ on linear and log scale.
-        \item \textbf{Bayesian credible interval} with Jeffreys prior.
-        \item \textbf{Information gain} $I_{\text{batch}}<10^{-4}$ bits.
-        \item Run stops when \emph{all} criteria satisfied for every monitored node.
-            \item \textbf{Composite stopping rule.}  Convergence declared when
-      \[
-        \frac{z_{1-\alpha/2}\,\widehat \sigma_v}{\widehat P_v} \le \varepsilon_{\text{rel}},\quad
-        h^{\log}_v(z) \le \varepsilon^{\log},\quad
-        I_{\text{batch}} < 10^{-4}\;\text{bits}.
-      \]
-      \end{itemize}
-    \column{0.45\textwidth}
-      \includegraphics[width=\linewidth]{2_framework/research_objective_3_mc_sampling/ci_trace.pdf} % create a small diagnostic trace figure
-  \end{columns}
+\begin{frame}{Composite Convergence Criteria}
+  \textbf{Step--1: Statistical precision per node $v$}
+  \[
+     N^{(v)}_{\text{req}} = \max\Bigl( N^{(v)}_{\varepsilon},\; N^{(v)}_{\log},\; N^{(v)}_{\text{Bayes}},\; N^{(v)}_{\text{info}} \Bigr)
+  \]
+  where
+  \begin{align*}
+     N^{(v)}_{\varepsilon} &:= \Bigl\lceil \tfrac{z^2\,\widehat P_v(1-\widehat P_v)}{(\varepsilon_{\text{rel}}\widehat P_v)^2}\Bigr\rceil,\\[2pt]
+     N^{(v)}_{\log} &:= \Bigl\lceil \tfrac{z^2(1-\widehat P_v)}{(\varepsilon^{\log}\,\ln 10)^2\widehat P_v}\Bigr\rceil,\\[2pt]
+     N^{(v)}_{\text{Bayes}} &:= \text{Eq.~(Jeffreys)} ,\\[2pt]
+     N^{(v)}_{\text{info}} &:= \bigl\lceil (2\ln 2)I_{\min}^{-1}\bigr\rceil.
+  \end{align*}
 \end{frame}
 
+% ----------------------------------------------------------------------------
+%  Composite Stopping Rulke
+% ----------------------------------------------------------------------------
+\begin{frame}{Composite Stopping Rule}
+\footnotesize
+\begin{columns}
+  \column{0.55\textwidth}
+    \textbf{Step--2: Global precision budget}
+  \[
+     N_{\text{req}} = \max_{v \in \mathcal V} N^{(v)}_{\text{req}}.
+  \]
+  \textbf{Step--3: Translate to iteration budget}
+  \[
+     T_{\varepsilon} = \Bigl\lceil \frac{N_{\text{req}}}{N}\Bigr\rceil, \qquad N = B P \omega.
+  \]
+  \textbf{Step--4: External user limits}
+  \[
+    T_{\max}\; (\text{iteration cap}), \qquad \tau_{\max}\; (\text{wall-clock cap}).
+  \]
+  \textbf{Stopping time}
+  \[
+     T^{\*} = \min \bigl\{\, T_{\varepsilon},\; T_{\max},\; T_{\tau}\bigr\}, \qquad T_{\tau}=\min\{ t:\;\tau(t)\ge \tau_{\max}\}.
+  \]
+
+  \column{0.45\textwidth}
+    \begin{block}{Intuition}
+      \begin{itemize}
+        \item Statistical criteria guarantee \emph{precision}.  $T_{\varepsilon}$ dominates when resources are ample.
+        \item Rule is conservative: run halts \emph{as soon as any} limit is met.
+      \end{itemize}
+    \end{block}
+\end{columns}
+\end{frame}
+
+
+
+% ----------------------------------------------------------------------------
+%  On-the-Fly Diagnostics & Accuracy Metrics
+% ----------------------------------------------------------------------------
+\begin{frame}{On-the-Fly Diagnostics \& Accuracy Metrics}
+\footnotesize
+Additional diagnostics when \texttt{true P} is known (for debugging).
+\centering
+\begin{tabular}{l l}
+\toprule
+\textbf{Metric} & \textbf{Formula}\\
+\midrule
+Absolute error & $\Delta_v = |\widehat P_v-P_v|$\\[2pt]
+Relative error & $\delta_v = \Delta_v / P_v$\\[2pt]
+Mean-squared error & $\text{MSE}_v =(\widehat P_v-P_v)^2$\\[2pt]
+Linear half-width & $h^{\text{lin}}_v = z\sqrt{\widehat P_v(1-\widehat P_v)/N}$\\[2pt]
+Log half-width & $h^{\log}_v = \dfrac{z\widehat \sigma_v}{\widehat P_v\ln 10}$\\[2pt]
+Bayesian half-width & $h^{\text{Bayes}}_v = \dfrac{q_{1-t}-q_t}{2}$\\[2pt]
+Information gain & $I_{\text{batch}} = H(\alpha,\beta)-H(\alpha+\Delta s,\,\beta+\Delta f)$\\[2pt]
+z--score & $z_v = \dfrac{\widehat P_v-P_v}{\widehat \sigma_v}$\\[2pt]
+$\chi^{2}$ goodness-of-fit & $\chi^{2}_v = \frac{(O_1-E_1)^2}{E_1}+\frac{(O_0-E_0)^2}{E_0}$\\
+\bottomrule
+\end{tabular}
+\end{frame}
