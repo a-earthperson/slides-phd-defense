@@ -1,8 +1,10 @@
-\section{Research Objective 1: Bridge PRA Modeling Semantics with Probabilistic Circuits}
-\begin{frame}
-    \Large{\centerline{\textbf{Research Objective 1}}}
-    \vspace{6pt}
-    \large{\centerline{\textbf{Bridge PRA Modeling Semantics with Probabilistic Circuits}}}
+\section{Research Objective 1: From PRA Logic to Probabilistic Circuits}
+\begin{frame}{Objective 1 — Unifying Risk Logic as a Probabilistic DAG}
+\begin{itemize}[<+->]
+  \item Map event–tree branching and fault–tree gates into a single \textbf{probabilistic directed acyclic graph (PDAG)}.
+  \item Retain exact Boolean semantics while exposing hardware-native operations (AND/OR, $k$-of-$n$, XOR).
+  \item Provide a substrate for compilation, bit-parallel evaluation, and future dynamic extensions.
+\end{itemize}
 \end{frame}
 
 \subsection{PRA Overview}
@@ -89,11 +91,11 @@
       \includesvg[width=\linewidth]{1_concepts/dag_pass_1.svg}\par % Replace with your image file
 
      \column{0.34\textwidth}
-      Start with an Arbitrary Topological Ordering:
+      Compile \textbf{once}, evaluate millions of times:
       \begin{itemize}
-          \item {Aim for succinctness.}
-          \item {prefer HW-native ops.}
-          \item {e.g. don't expand k/n.}
+          \item Layered topological order for memory coalescing.
+          \item Preserve $k$-of-$n$ gates to avoid exponential blow-up.
+          \item Replace linear scans with hash-indexed containers.
       \end{itemize}
   \end{columns}
 \end{frame}
@@ -127,18 +129,30 @@
       \begin{itemize}
           \item {Set the inputs [on/off].}
           \item {Observe the outputs [on/off].}
-          \item {Can be used as a building block for an embedding ML model.}
       \end{itemize}\par
-      \vspace{10pt}
-      \textbf{But just how fast is it?}
+      \vspace{2pt}
+      \tiny{\textbf{\emph{{Can be used as a building block for an embedding ML model.}}}}\par
+            \vspace{10pt}
+      \normalsize\textbf{But how to handle K/N gates?}
+
     }
      \column{0.4\textwidth}
       \includesvg[height=0.9\textheight]{1_concepts/dag_pass_2.svg}\par % Replace with your image file
   \end{columns}
 \end{frame}
 
+\input{1_concepts/k_of_n}
 
-\begin{frame}[t]{Eval Query on the Compiled Knowledge Graph}
+% --- Transition to Objective 2: High-Throughput Evaluation ---
+\begin{frame}{From Logic to High-Throughput Evaluation}
+  \centering
+  \Large Next: How do we process \textbf{millions of scenarios per second}?\\[6pt]
+  \normalsize
+  Hardware-native kernels and composite convergence diagnostics :: \textit{Research Objective 2}
+\end{frame}
+
+\iffalse % ---- moved to execution section ----
+%
   \begin{columns}
     \column{0.60\textwidth}
     {
@@ -200,6 +214,8 @@
 \end{itemize}
 \end{frame}
 
+
+\fi
 
 \subsection{Back to Working Example: One Initiating Event, Three Fault Trees, Six Basic Events, Five End States}
 \begin{frame}
