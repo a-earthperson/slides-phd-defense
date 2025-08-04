@@ -1,0 +1,40 @@
+\section{Research Objective 2: Develop data-parallel methods for evaluating Boolean circuits}
+\begin{frame}
+    \Large{\centerline{\textbf{Research Objective 2}}}
+    \vspace{6pt}
+    \large{\centerline{\textbf{Develop data-parallel methods for evaluating Boolean circuits}}}
+\end{frame}
+
+%% kernel and bitpack data layout
+
+%% the sycl execution model
+
+%% mapping data / dag to sycl kernels
+
+% special case for k/n kernels
+\input{1_concepts/k_of_n}
+
+%% throughput graph
+\begin{frame}{Eval Query}
+  \begin{columns}
+    \column{0.60\textwidth}
+    {
+      \textbf{Eval Query Performance on GPUs:}
+      \begin{itemize}
+          \item {Latency: 200-300 $ms$ per graph pass.}
+          \item {Throughput: VRAM bound (see plot).}
+          \item {Benchmarked on Nvidia GTX 1660 [6GB].}
+          \item {Graph sizes: from $\approx 50$ to $\approx 2000$ nodes.}
+          \item {Evals: from 16M to 1B per node per pass.}
+      \end{itemize}
+      \vspace{10pt}
+      \textbf{Q: Are these enough samples to estimate the Expectation Query?}
+    }
+     \column{0.4\textwidth}
+        \centering
+        \includesvg[height=0.9\textheight]{1_concepts/mem_allocation_lines_zoom.svg}
+  \end{columns}
+\end{frame}
+
+
+

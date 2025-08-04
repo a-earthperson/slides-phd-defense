@@ -1,0 +1,60 @@
+\section{Research Objective 3: Develop data-parallel Monte Carlo methods for estimating probabilities}
+\begin{frame}
+    \Large{\centerline{\textbf{Research Objective 3}}}
+    \vspace{6pt}
+    \large{\centerline{\textbf{Develop data-parallel Monte Carlo methods for estimating probabilities}}}
+\end{frame}
+
+\subsection{Back to Working Example: One Initiating Event, Three Fault Trees, Six Basic Events, Five End States}
+\begin{frame}
+  \begin{columns}
+    \column{0.66\textwidth}
+      \includesvg[height=\textheight]{1_concepts/dag_pass_3.svg} % Replace with your image file
+     \column{0.33\textwidth}
+      \includesvg[width=\linewidth]{1_concepts/pra-model.svg} % Replace with your image file
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}[t, allowframebreaks]
+\frametitle{Monte Carlo Sampling}
+\begin{itemize}
+  \item Rather than summing or bounding all combinations of failures, \emph{simulate} random draws of \(\mathbf{X}\).
+  \item Each Monte Carlo iteration:
+    \begin{enumerate}
+      \item Sample \(x_1, x_2,\dots,x_n \overset{\text{i.i.d.}}{\sim} \prod p(x_i)\).
+      \item Evaluate the Boolean function \(F(\mathbf{x})\) (cost is just logical gate evaluation).
+      \item Collect whether \(F(\mathbf{x})=1\) (failure) or 0 (success).
+    \end{enumerate}
+  \item Repeating for many samples \(\{\mathbf{x}^{(1)}, \dots, \mathbf{x}^{(N)}\}\) yields a \emph{sample average} estimate of the probability.
+  \item Benefits:
+    \begin{itemize}
+      \item Bypasses explicit inclusion-exclusion expansions.
+      \item Straightforward to parallelize (evaluate each draw in separate threads or blocks).
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t, allowframebreaks]
+\frametitle{Estimator for the Expected Value (i.e., Probability)}
+\begin{itemize}
+  \item A Boolean function \(F(\mathbf{x})\) can be viewed as an indicator function: \(F(\mathbf{x}) \in \{0,1\}\).
+  \item The event \(\{F(\mathbf{X})=1\}\) has probability \(\mathbb{E}[F(\mathbf{X})]\).
+  \item \textbf{Monte Carlo estimator:}
+    \[
+      \widehat{P}_N
+      \;=\;
+      \frac{1}{N}\sum_{i=1}^N 
+      F\!\bigl(\mathbf{x}^{(i)}\bigr),
+    \]
+    where each \(\mathbf{x}^{(i)}\) is a random draw from the input distribution.
+  \item By the Law of Large Numbers,
+    \[
+      \lim_{N \to \infty}\;\widehat{P}_N
+      \;=\;
+      \Pr\bigl[F(\mathbf{X})=1\bigr],
+      \quad \text{almost surely}.
+    \]
+  \item Error decreases at rate \(\mathcal{O}(1/\sqrt{N})\), analyzed via the Central Limit Theorem.
+\end{itemize}
+\end{frame}

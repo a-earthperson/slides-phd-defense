@@ -1,19 +1,49 @@
-\begin{frame}[t]{Handling Voter Logic - Expansion} 
+% ------------ Slide 1a : Original Voting Gate -----------------
+\begin{frame}[t]{What is a $k$-of-$n$ (Voting) Gate?}
   \begin{columns}
-    \column{0.60\textwidth}
-    {
-      \textbf{The Simplest Type of Query: Eval(G)}\par
-      \begin{itemize}
-          \item {Set the inputs [on/off].}
-          \item {Observe the outputs [on/off].}
-      \end{itemize}\par
-      \vspace{2pt}
-      \tiny{\textbf{\emph{{Can be used as a building block for an embedding ML model.}}}}\par
-            \vspace{10pt}
-      \normalsize\textbf{But how to handle K/N gates?}
+    % Gate graphic
+    \column{0.30\textwidth}
+      \centering
+    \input{1_concepts/ft_3_of_no_expansion}
+      \\[-4pt] \scriptsize Example: $k=3$, $n=5$
+    % Bullets
+    \column{0.70\textwidth}
+      \begin{itemize}[<+->]
+        \item Outputs 1 iff at least $k$ of $n$ inputs are 1 (majority / threshold logic).
+        \item Classic PRA models expand this gate into basic AND/OR primitives --> leads to combinatorial blow-up.
+      \end{itemize}
+  \end{columns}
+\end{frame}
 
-    }
-     \column{0.4\textwidth}
-      \input{1_concepts/ft_3_of_5}\par % Replace with your image file
+% ------------ Slide 1b : Naïve AND/OR Expansion -----------------
+\begin{frame}[t]{Naïve Expansion => Combinatorial Explosion}
+  \begin{columns}
+    % Left: bullet explanation
+    \column{0.35\textwidth}
+      \begin{itemize}[<+->]
+        \item Expansion = OR of every subset with $k,\dots,n$ true inputs.
+        \item For $n=5$, $k=3$: $\binom{5}{3}=10$ conjunction clauses => 26 total gates after binary-tree lowering.
+        \item Complexity becomes $\Theta(2^{n}/\sqrt{n})$ at $k\approx n/2$.
+      \end{itemize}
+    % Right: expanded tree graphic
+    \column{0.65\textwidth}
+      \centering
+      \input{1_concepts/ft_3_of_5}
+      \scriptsize 3-of-5 gate expanded to AND/OR Sum-of-Products
+  \end{columns}
+\end{frame}
+
+% ------------ Slide 2 : Hardware-Native Voting Gate ------------
+\begin{frame}[t]{Hardware-Native Voting Gate (No Expansion)}
+  \begin{columns}
+    \column{0.55\textwidth}
+      \begin{itemize}[<+->]
+        \item Preserve the gate as one vertex; kernel does bit-parallel population count.
+        \item Complexity $\mathcal{O}(n)$ integer ops; counter width $\le 8$ bits for PRA fan-ins.
+        \item Graph shrinks from $\Theta(2^{n}/\sqrt{n})$ to \textbf{1}. Huge memory & launch savings.
+      \end{itemize}
+    \column{0.45\textwidth}
+      \centering
+      \includegraphics[height=3.4cm]{figs/voter_kernel_schematic.pdf} % placeholder
   \end{columns}
 \end{frame}

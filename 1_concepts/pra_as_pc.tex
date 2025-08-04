@@ -133,7 +133,7 @@
       \vspace{2pt}
       \tiny{\textbf{\emph{{Can be used as a building block for an embedding ML model.}}}}\par
             \vspace{10pt}
-      \normalsize\textbf{But how to handle K/N gates?}
+      \normalsize\textbf{But just how fast is this?}
 
     }
      \column{0.4\textwidth}
@@ -141,37 +141,16 @@
   \end{columns}
 \end{frame}
 
-\input{1_concepts/k_of_n}
-
 % --- Transition to Objective 2: High-Throughput Evaluation ---
 \begin{frame}{From Logic to High-Throughput Evaluation}
   \centering
   \Large Next: How do we process \textbf{millions of scenarios per second}?\\[6pt]
   \normalsize
-  Hardware-native kernels and composite convergence diagnostics :: \textit{Research Objective 2}
+  Hardware-native kernels :: \textit{Research Objective 2}
 \end{frame}
 
 \iffalse % ---- moved to execution section ----
 %
-  \begin{columns}
-    \column{0.60\textwidth}
-    {
-      \textbf{Eval Query Performance on GPUs:}
-      \begin{itemize}
-          \item {Latency: 200-300 $ms$ per graph pass.}
-          \item {Throughput: VRAM bound (see plot).}
-          \item {Benchmarked on Nvidia GTX 1660 [6GB].}
-          \item {Graph sizes: from $\approx 50$ to $\approx 2000$ nodes.}
-          \item {Evals: from 16M to 1B per node per pass.}
-      \end{itemize}
-      \vspace{10pt}
-      \textbf{Q: Are these enough samples to estimate the Expectation Query?}
-    }
-     \column{0.4\textwidth}
-        \centering
-        \includesvg[height=0.9\textheight]{1_concepts/mem_allocation_lines_zoom.svg}
-  \end{columns}
-\end{frame}
 
 \begin{frame}{Estimator for the Expected Value (i.e., Probability)}
 \begin{itemize}
@@ -216,13 +195,3 @@
 
 
 \fi
-
-\subsection{Back to Working Example: One Initiating Event, Three Fault Trees, Six Basic Events, Five End States}
-\begin{frame}
-  \begin{columns}
-    \column{0.66\textwidth}
-      \includesvg[height=\textheight]{1_concepts/dag_pass_3.svg} % Replace with your image file
-     \column{0.33\textwidth}
-      \includesvg[width=\linewidth]{1_concepts/pra-model.svg} % Replace with your image file
-  \end{columns}
-\end{frame}
