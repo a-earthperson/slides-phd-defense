@@ -4,7 +4,7 @@
     % Gate graphic
     \column{0.30\textwidth}
       \centering
-    \input{1_concepts/ft_3_of_no_expansion}
+    \input{2_framework/research_objective_2_sycl_eval/ft_3_of_no_expansion}
       \\[-4pt] \scriptsize Example: $k=3$, $n=5$
     % Bullets
     \column{0.70\textwidth}
@@ -28,7 +28,7 @@
     % Right: expanded tree graphic
     \column{0.65\textwidth}
       \centering
-      \input{1_concepts/ft_3_of_5}
+      \input{2_framework/research_objective_2_sycl_eval/ft_3_of_5}
       \scriptsize 3-of-5 gate expanded to AND/OR Sum-of-Products
   \end{columns}
 \end{frame}
@@ -39,11 +39,11 @@
     \column{0.55\textwidth}
       \begin{itemize}[<+->]
         \item Preserve the gate as one vertex; kernel does bit-parallel population count.
-        \item Complexity $\mathcal{O}(n)$ integer ops; counter width $\le 8$ bits for PRA fan-ins.
+        \item Complexity $\mathcal{O}(n)$ integer ops; counter width $\le 8$ bits for PRA fan-ins (256 inputs).
         \item Graph shrinks from $\Theta(2^{n}/\sqrt{n})$ to \textbf{1}. Huge memory & launch savings.
       \end{itemize}
     \column{0.45\textwidth}
       \centering
-      \includegraphics[height=3.4cm]{figs/voter_kernel_schematic.pdf} % placeholder
+      \includesvg[height=5cm]{2_framework/research_objective_2_sycl_eval/3_of_5.svg} % placeholder
   \end{columns}
 \end{frame}
