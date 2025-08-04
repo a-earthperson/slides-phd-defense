@@ -1,0 +1,56 @@
+\subsection{Common-Cause Failure (CCF) in Monte-Carlo}
+
+% ------------------------------------
+%  Frame 1 – Why Common-Cause Failure Modelling?
+% ------------------------------------
+\begin{frame}{Motivation: Common-Cause Failures}
+  \begin{itemize}
+    \item Independent failure assumption breaks down when components share hidden dependencies (environment, manufacturing defects, etc.).
+    \item Neglecting CCFs can under-predict top-event probability by orders of magnitude.
+    \item Goal: incorporate parametric CCF models \emph{without} disrupting the bit-parallel Monte-Carlo pipeline.
+  \end{itemize}
+  \vspace{4pt}
+\end{frame}
+
+% ------------------------------------
+%  Frame 2 – Embedding CCF Groups in the PDAG
+% ------------------------------------
+\begin{frame}{Graph Construction for a CCF Group $\mathcal C$}
+  \footnotesize
+  \begin{enumerate}
+    \item \textbf{Scale independent leaves.}  Each basic event $c_i\in\mathcal C$ keeps an independent probability $(1-\lambda_{\text{ccf}})\,p_{c_i}$.   
+    \item \textbf{Insert CCF trigger variable} $S_{\mathcal C}$ with failure probability $\lambda_{\text{ccf}} = \sum_{k\ge2} \pi_{\mathcal C,k}$.  
+    \item \textbf{CCF-root gate} $G_{\mathcal C}= S_{\mathcal C}\lor c_1\lor\dots\lor c_m$ routes either independent or common shock to the rest of the graph.
+    \item (Optional) \textbf{Multiplicity shadow gates} $H^{(k)}_{\mathcal C}$ realize models that distinguish the number $k$ of simultaneously failed components.
+  \end{enumerate}
+  \vspace{2pt}
+  \begin{block}{Key property}
+    All new nodes are \emph{gates}; the set of basic events is unchanged, so the Monte-Carlo sampling kernel remains untouched.
+  \end{block}
+\end{frame}
+
+% ------------------------------------
+%  Frame 3 – Monte-Carlo Evaluation & Convergence
+% ------------------------------------
+\begin{frame}{MC Treatment and Convergence Guarantees}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+    \textbf{Sampling logic}
+    \begin{itemize}
+      \item Leaves $\{S_{\mathcal C},c_1,\dots,c_m\}$ are sampled \emph{independently}.  Correlation enters only via logic connectivity.
+      \item Same bit-packing kernel, same PRNG counters – zero performance overhead.
+      \item Trigger variable firing forces simultaneous bits in the shadow gate; implemented by one extra OR reduction.
+    \end{itemize}
+    \column{0.50\textwidth}
+    \begin{block}{Unbiasedness & Variance}
+      Indicator $Z$ of any top-level node is still a Bernoulli random variable.
+      \[
+        \operatorname{Var}[Z] = P(1-P),\qquad P=\Pr[Z=1].
+      \]
+      Therefore all proofs for half-width, Bayesian interval, and information-gain criteria remain valid \textbf{unchanged}.  CCF merely shifts $P$.
+    \end{block}
+  \end{columns}
+  \vspace{4pt}
+  \textbf{Take-away:} CCF groups integrate into MC with \emph{zero} sampler modification; convergence diagnostics from Research Objective 4 apply verbatim.
+\end{frame}
+
