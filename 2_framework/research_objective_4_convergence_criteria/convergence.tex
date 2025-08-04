@@ -1,0 +1,81 @@
+
+\section{Research Objective 4: Convergence Guarantees}
+\begin{frame}
+    \Large{\centerline{\textbf{Research Objective 4}}}
+    \vspace{6pt}
+    \large{\centerline{\textbf{Develop Robust Convergence Criteria}}}
+\end{frame}
+\subsection{Interpretation of Probability}
+% ------------------------------------
+%  Criterion 1 – Frequentist Half-Width
+% ------------------------------------
+\begin{frame}{Criterion 1: Frequentist Half-Width (Wald)}
+  \footnotesize
+  Let $\{Y^{(i)}\}_{i=1}^N$ be i.i.d. Bernoulli trials with $P=\Pr[Y=1]$.  The estimator $\widehat P_N=\tfrac1N\sum_i Y^{(i)}$ obeys the CLT:
+  \[\sqrt{N}\,\bigl(\widehat P_N-P\bigr) \;\xrightarrow{d}\; \mathcal N\bigl(0, P(1-P)\bigr).\]
+  A $(1-\alpha)$ two–sided \textbf{Wald} interval is therefore
+  \[ \widehat P_N \;\pm\; z_{1-\alpha/2}\, \sqrt{\tfrac{\widehat P_N(1-\widehat P_N)}{N}}. \]
+  \begin{alertblock}{Stopping rule}
+   \textbf{Half-width:} $h_N^{\text{lin}}(z)=z\sqrt{\widehat P_N(1-\widehat P_N)/N}.$ Declare convergence when $h_N^{\text{lin}}/\widehat P_N\le \varepsilon_{\text{rel}}$.
+  \end{alertblock}
+  \begin{block}{Intuition}
+    Shrinks a \emph{relative} confidence band around the estimate; fast for moderate $P$, slow for rare events where $\widehat P_N\ll10^{-4}$.
+  \end{block}
+\end{frame}
+
+% ------------------------------------
+%  Criterion 2 – Bayesian Credible Interval
+% ------------------------------------
+\begin{frame}{Criterion 2: Bayesian Credible Interval (Jeffreys prior)}
+  \footnotesize
+  Prior $p\sim\text{Beta}\bigl(\tfrac12,\tfrac12\bigr)$ is invariant under re-parameterization.  After $s$ successes and $f$ failures the posterior is
+  \[ p\mid\text{data}\;\sim\; \text{Beta}\bigl(s+\tfrac12,\,f+\tfrac12\bigr). \]
+  The central $(1-\alpha)$ credible interval $[q_t,q_{1-t}]$ with $t=\alpha/2$ has
+  \begin{alertblock}{Stopping rule}
+  \textbf{half-width} $h_N^{\text{Bayes}}=(q_{1-t}-q_t)/2$. Convergence when $h_N^{\text{Bayes}}/\widehat P_N\le \varepsilon_{\text{rel}}^{\text{Bayes}}$.
+  \end{alertblock}
+  \begin{block}{Intuition}
+  Integrates parameter uncertainty; maintains correct coverage even when $\widehat P_N$ is based on only a handful of observed failures (rare-event tails).
+  \end{block}
+\end{frame}
+
+% ------------------------------------
+%  Criterion 3 – Information Gain
+% ------------------------------------
+\begin{frame}{Criterion 3: Information-Theoretic Gain}
+  \small
+  Posterior entropy of $\text{Beta}(\alpha,\beta)$ is
+  \[ H(\alpha,\beta)=\ln B(\alpha,\beta)- (\alpha-1)\psi(\alpha)- (\beta-1)\psi(\beta)+ (\alpha+\beta-2)\psi(\alpha+\beta). \]
+  After a batch $(\Delta s,\Delta f)$ the \textbf{information gain} is
+  \[ I_{\text{batch}} = H(\alpha,\beta) - H(\alpha+\Delta s,\,\beta+\Delta f). \]
+  \begin{alertblock}{Stopping rule}
+   Stop when $I_{\text{batch}}<I_{\min}$ bits (default $10^{-4}$).
+  \end{alertblock}
+  \begin{block}{Intuition}
+ Scale-free; halts when each new batch conveys negligible Shannon information, preventing oversampling when $P$ is either very small or very large.
+  \end{block}
+\end{frame}
+
+% ----------------------------------------------------------------------------
+%  Composite Convergence Diagnostics
+% ----------------------------------------------------------------------------
+\begin{frame}{Composite Convergence Diagnostics}
+  \begin{columns}
+    \column{0.55\textwidth}
+      \begin{itemize}
+        \item \textbf{Frequentist half-width} $h_v(z)$ on linear and log scale.
+        \item \textbf{Bayesian credible interval} with Jeffreys prior.
+        \item \textbf{Information gain} $I_{\text{batch}}<10^{-4}$ bits.
+        \item Run stops when \emph{all} criteria satisfied for every monitored node.
+            \item \textbf{Composite stopping rule.}  Convergence declared when
+      \[
+        \frac{z_{1-\alpha/2}\,\widehat \sigma_v}{\widehat P_v} \le \varepsilon_{\text{rel}},\quad
+        h^{\log}_v(z) \le \varepsilon^{\log},\quad
+        I_{\text{batch}} < 10^{-4}\;\text{bits}.
+      \]
+      \end{itemize}
+    \column{0.45\textwidth}
+      \includegraphics[width=\linewidth]{2_framework/research_objective_3_mc_sampling/ci_trace.pdf} % create a small diagnostic trace figure
+  \end{columns}
+\end{frame}
+
